@@ -1,0 +1,13 @@
+pl\edu\agh\iosr\lambda\dropwizard\config\StockServiceConfiguration.class
+pl\edu\agh\iosr\lambda\dropwizard\StockService.class
+pl\edu\agh\iosr\lambda\dropwizard\kafka\TridentTupleGenerator.class
+pl\edu\agh\iosr\lambda\dropwizard\demo\config\ExampleServiceConfiguration.class
+pl\edu\agh\iosr\lambda\dropwizard\config\StockFieldsContainer.class
+pl\edu\agh\iosr\lambda\dropwizard\demo\hello\HelloResource.class
+pl\edu\agh\iosr\lambda\dropwizard\stock\StockResource.class
+pl\edu\agh\iosr\lambda\dropwizard\demo\config\MoneyConfiguration.class
+pl\edu\agh\iosr\lambda\dropwizard\demo\ExampleService.class
+pl\edu\agh\iosr\lambda\dropwizard\config\StockConfiguration.class
+pl\edu\agh\iosr\lambda\dropwizard\demo\config\MessagesConfiguration.class
+pl\edu\agh\iosr\lambda\dropwizard\demo\money\MoneyResource.class
+pl\edu\agh\iosr\lambda\dropwizard\kafka\KafkaApplication.class
