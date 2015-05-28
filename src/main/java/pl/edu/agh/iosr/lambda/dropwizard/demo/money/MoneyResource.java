@@ -28,9 +28,9 @@ public class MoneyResource {
         String response;
         response  = "Money rates received! = true";
         JSONObject jsonBody = new JSONObject(body);
-        for(String key : jsonBody.keySet()){
+        /*for(String key : jsonBody.keySet()){
             logger.info(key+":"+jsonBody.getString(key));
-        }
+        }*/
 
         return response;
     }

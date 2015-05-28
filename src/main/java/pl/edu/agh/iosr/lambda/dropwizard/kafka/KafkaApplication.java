@@ -17,8 +17,7 @@ public class KafkaApplication {
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 
-    //TODO SET BROKER ADDRESS
-    String broker = "SET_ME";
+    String broker = "localhost:9092";
 
     Producer<String,TridentTuple> producer;
 
