@@ -66,10 +66,16 @@ public class StockResource {
             return FAILED;
         }*/
 
-        if(tridentValidator.validateJson(jsonBody) && kafkaApplication.sendData(body)) {
+        if(tridentValidator.invalidJson(jsonBody)){
+            logger.warning("DATA INVALID");
+            return FAILED;
+        }
+
+        if(kafkaApplication.sendData(body)) {
             logger.info("Tuple sent");
         }else{
             logger.warning("Failed to send tuple");
+            return FAILED;
         }
         return ACCEPTED;
 

@@ -28,17 +28,19 @@ public class KafkaApplication {
         Properties props = new Properties();
 
         props.put("metadata.broker.list",broker);
-        props.put("request.required.acks","1");
-        props.put("partitioner.class","pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentPartitioner");
-        props.put("value.serializer","kafka.serializer.StringEncoder");
+        props.put("serializer.class", "kafka.serializer.StringEncoder");
+        props.put("request.required.acks", "1");
+
 
 
         ProducerConfig config = new ProducerConfig(props);
 
         producer = new Producer<>(config);
+
     }
 
     public boolean sendData(String validatedJsonBody){
+        logger.info("Sending message");
         try{
             producer.send(new KeyedMessage<String, String>(topicName,validatedJsonBody));
         }catch (Exception e){

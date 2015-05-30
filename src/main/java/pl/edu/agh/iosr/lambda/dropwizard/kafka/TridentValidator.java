@@ -1,14 +1,8 @@
 package pl.edu.agh.iosr.lambda.dropwizard.kafka;
 
-import backtype.storm.tuple.Fields;
 import org.json.JSONObject;
 import pl.edu.agh.iosr.lambda.dropwizard.config.iface.FieldsDescriptor;
-import pl.edu.agh.iosr.lambda.dropwizard.stock.StockResource;
-import storm.trident.tuple.TridentTuple;
-import storm.trident.tuple.TridentTupleView;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -25,10 +19,10 @@ public class TridentValidator {
         this.fields = fields;
     }
 
-    public boolean validateJson(JSONObject body){
+    public boolean invalidJson(JSONObject body){
 
         if(null == body){
-            return false;
+            return true;
         }
 
         for(String field : fields.getAllFields()){
