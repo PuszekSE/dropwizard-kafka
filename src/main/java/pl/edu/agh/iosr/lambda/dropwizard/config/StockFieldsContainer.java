@@ -15,7 +15,7 @@ public class StockFieldsContainer {
     public static String PRICE = "LastPrice";
 
     public StockFieldsContainer(){
-        stockFields = new Fields(TIMESTAMP,SYMBOL,NAME,PRICE);
+        stockFields = new Fields(SYMBOL,NAME,PRICE,TIMESTAMP);
     }
 
 }

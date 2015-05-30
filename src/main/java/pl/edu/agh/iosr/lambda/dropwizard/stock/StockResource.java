@@ -1,11 +1,13 @@
 package pl.edu.agh.iosr.lambda.dropwizard.stock;
 
 
+import backtype.storm.tuple.Values;
 import org.json.JSONObject;
 import pl.edu.agh.iosr.lambda.dropwizard.config.StockConfiguration;
 import pl.edu.agh.iosr.lambda.dropwizard.config.StockFieldsContainer;
 import pl.edu.agh.iosr.lambda.dropwizard.kafka.KafkaApplication;
 import pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentTupleGenerator;
+import pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentValuesGenerator;
 import storm.trident.tuple.TridentTuple;
 
 import javax.ws.rs.GET;
@@ -25,7 +27,8 @@ public class StockResource {
         this.conf = conf;
     }
 
-    private TridentTupleGenerator tridentGenerator = new TridentTupleGenerator(stockFieldsContainer.stockFields);
+    private TridentValuesGenerator valuesGenerator = new TridentValuesGenerator(stockFieldsContainer.stockFields);
+    private TridentTupleGenerator tupleGenerator = new TridentTupleGenerator(stockFieldsContainer.stockFields);
 
     private KafkaApplication kafkaApplication = new KafkaApplication();
 
@@ -52,15 +55,23 @@ public class StockResource {
 
         JSONObject jsonBody = new JSONObject(body);
 
-        TridentTuple tridentTuple = tridentGenerator.tupleInstance(jsonBody);
+        Values tridentValues = valuesGenerator.valuesInstance(jsonBody);
 
-        if(tridentTuple==null){
+        if(tridentValues==null){
             logger.warning(FAILED);
             return FAILED;
         }
 
-        kafkaApplication.sendTuple(tridentTuple);
-        logger.info("Tuple sent");
+        TridentTuple tridentTuple = tupleGenerator.tupleInstance(jsonBody);
+        if(tridentTuple==null){
+            logger.warning(FAILED);
+            return FAILED;
+        }
+        if(kafkaApplication.sendTuple(tridentTuple)) {
+            logger.info("Tuple sent");
+        }else{
+            logger.warning("Failed to send tuple");
+        }
         return ACCEPTED;
 
     }

@@ -1,12 +1,12 @@
-package pl.edu.agh.iosr.lambda.dropwizard.kafka;
+package pl;
 
-import com.yammer.dropwizard.json.ObjectMapperFactory;
+import backtype.storm.tuple.Values;
+
 import kafka.javaapi.producer.Producer;
 
 
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
-import storm.trident.tuple.TridentTuple;
 
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -14,37 +14,36 @@ import java.util.logging.Logger;
 /**
  * Created by Puszek_SE on 2015-05-23.
  */
-public class KafkaApplication {
+public class KafkaApplicationBad {
 
+    private static Logger logger = Logger.getLogger(KafkaApplicationBad.class.getName());
 
     private static final String topicName = "tuple";
 
-    Logger logger = Logger.getLogger(this.getClass().getName());
 
     String broker = "localhost:9092";
+    Producer <String,Values> producer;
 
-    Producer<String,byte[]> producer;
+    public KafkaApplicationBad(){
 
-    public KafkaApplication(){
         Properties props = new Properties();
 
         props.put("metadata.broker.list",broker);
         props.put("request.required.acks","1");
         props.put("partitioner.class","pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentPartitioner");
-
+        props.put("value.serializer","org.apache.kafka.common.serialization.ByteArraySerializer");
 
         ProducerConfig config = new ProducerConfig(props);
 
         producer = new Producer<>(config);
-        ObjectMapperFactory factory = new ObjectMapperFactory();
 
     }
 
-    public boolean sendTuple(TridentTuple tuple){
+    public boolean sendTuple(Values values){
         try{
-            producer.send(new KeyedMessage<String, TridentTuple>("tuple",tuple);
+            producer.send(new KeyedMessage<String, Values>(topicName,values));
         }catch (Exception e){
-            logger.warning("Message failed: "+e);
+            logger.warning("Message failed: "+ e.getMessage());
             return false;
         }
         return true;

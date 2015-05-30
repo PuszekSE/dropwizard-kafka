@@ -1,7 +1,6 @@
 package pl.edu.agh.iosr.lambda.dropwizard.demo.money;
 
 
-import org.json.JSONObject;
 import pl.edu.agh.iosr.lambda.dropwizard.demo.config.MoneyConfiguration;
 
 import javax.ws.rs.*;
@@ -27,8 +26,8 @@ public class MoneyResource {
     public String inputMethod(String body) {
         String response;
         response  = "Money rates received! = true";
-        JSONObject jsonBody = new JSONObject(body);
-        /*for(String key : jsonBody.keySet()){
+        /*JSONObject jsonBody = new JSONObject(body);
+        for(String key : jsonBody.keySet()){
             logger.info(key+":"+jsonBody.getString(key));
         }*/
 
