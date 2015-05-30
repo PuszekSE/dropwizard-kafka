@@ -6,7 +6,6 @@ import kafka.javaapi.producer.Producer;
 
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
-import storm.trident.tuple.TridentTuple;
 
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -23,7 +22,7 @@ public class KafkaApplication {
 
     String broker = "localhost:9092";
 
-    Producer<String,byte[]> producer;
+    Producer<String,String> producer;
 
     public KafkaApplication(){
         Properties props = new Properties();
@@ -31,18 +30,17 @@ public class KafkaApplication {
         props.put("metadata.broker.list",broker);
         props.put("request.required.acks","1");
         props.put("partitioner.class","pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentPartitioner");
+        props.put("value.serializer","kafka.serializer.StringEncoder");
 
 
         ProducerConfig config = new ProducerConfig(props);
 
         producer = new Producer<>(config);
-        ObjectMapperFactory factory = new ObjectMapperFactory();
-
     }
 
-    public boolean sendTuple(TridentTuple tuple){
+    public boolean sendData(String validatedJsonBody){
         try{
-            producer.send(new KeyedMessage<String, TridentTuple>("tuple",tuple);
+            producer.send(new KeyedMessage<String, String>(topicName,validatedJsonBody));
         }catch (Exception e){
             logger.warning("Message failed: "+e);
             return false;

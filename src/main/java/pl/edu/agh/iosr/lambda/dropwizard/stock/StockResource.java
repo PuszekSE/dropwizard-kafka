@@ -1,14 +1,12 @@
 package pl.edu.agh.iosr.lambda.dropwizard.stock;
 
 
-import backtype.storm.tuple.Values;
 import org.json.JSONObject;
 import pl.edu.agh.iosr.lambda.dropwizard.config.StockConfiguration;
-import pl.edu.agh.iosr.lambda.dropwizard.config.StockFieldsContainer;
+import pl.edu.agh.iosr.lambda.dropwizard.config.StockFieldsDescriptor;
+import pl.edu.agh.iosr.lambda.dropwizard.config.iface.FieldsDescriptor;
 import pl.edu.agh.iosr.lambda.dropwizard.kafka.KafkaApplication;
-import pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentTupleGenerator;
-import pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentValuesGenerator;
-import storm.trident.tuple.TridentTuple;
+import pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentValidator;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,14 +19,14 @@ public class StockResource {
     Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final StockConfiguration conf;
-    private static StockFieldsContainer stockFieldsContainer = new StockFieldsContainer();
+    private FieldsDescriptor stockFieldsDescriptor = new StockFieldsDescriptor();
 
     public StockResource(StockConfiguration conf) {
         this.conf = conf;
     }
 
-    private TridentValuesGenerator valuesGenerator = new TridentValuesGenerator(stockFieldsContainer.stockFields);
-    private TridentTupleGenerator tupleGenerator = new TridentTupleGenerator(stockFieldsContainer.stockFields);
+    //private TridentValuesGenerator valuesGenerator = new TridentValuesGenerator(stockFieldsDescriptor.stockFields);
+    private TridentValidator tridentValidator = new TridentValidator(stockFieldsDescriptor);
 
     private KafkaApplication kafkaApplication = new KafkaApplication();
 
@@ -55,19 +53,20 @@ public class StockResource {
 
         JSONObject jsonBody = new JSONObject(body);
 
-        Values tridentValues = valuesGenerator.valuesInstance(jsonBody);
+        /*Values tridentValues = valuesGenerator.valuesInstance(jsonBody);
 
         if(tridentValues==null){
             logger.warning(FAILED);
             return FAILED;
-        }
+        }*/
 
-        TridentTuple tridentTuple = tupleGenerator.tupleInstance(jsonBody);
+        /*TridentTuple tridentTuple = tridentValidator.tupleInstance(jsonBody);
         if(tridentTuple==null){
             logger.warning(FAILED);
             return FAILED;
-        }
-        if(kafkaApplication.sendTuple(tridentTuple)) {
+        }*/
+
+        if(tridentValidator.validateJson(jsonBody) && kafkaApplication.sendData(body)) {
             logger.info("Tuple sent");
         }else{
             logger.warning("Failed to send tuple");
