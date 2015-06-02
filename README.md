@@ -25,16 +25,7 @@ It contains full description of the data stream.
 List of all required fields, information about timestamp and Id fields and converter from json data to K,V map.
 
 TridentValidator, based on descriptor interface
-package pl.edu.agh.iosr.lambda.dropwizard.kafka;
 
-import org.json.JSONObject;
-import pl.edu.agh.iosr.lambda.dropwizard.config.iface.FieldsDescriptor;
-
-import java.util.logging.Logger;
-
-/**
- * Created by Puszek_SE on 2015-05-25.
- */
 public class TridentValidator {
 
     Logger logger = Logger.getLogger(this.getClass().getName());
