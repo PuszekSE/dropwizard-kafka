@@ -64,42 +64,11 @@
     </dependencies>
 
     <profiles>
-
         <profile>
+            <id>stock</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <id>demo</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.0</version>
-                        <configuration>
-                            <source>1.7</source>
-                            <target>1.7</target>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.2.1</version>
-                        <configuration>
-                            <mainClass>pl.edu.agh.iosr.lambda.dropwizard.demo.ExampleService</mainClass>
-                            <arguments>
-                                <argument>-classpath</argument>
-                                <argument>server</argument>
-                                <argument>configuration.yml</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>stock</id>
             <build>
                 <plugins>
                     <plugin>

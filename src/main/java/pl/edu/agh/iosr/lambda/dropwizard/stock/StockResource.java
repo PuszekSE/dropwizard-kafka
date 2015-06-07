@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import pl.edu.agh.iosr.lambda.dropwizard.config.StockConfiguration;
 import pl.edu.agh.iosr.lambda.dropwizard.config.StockFieldsDescriptor;
 import pl.edu.agh.iosr.lambda.dropwizard.config.iface.FieldsDescriptor;
+import pl.edu.agh.iosr.lambda.dropwizard.config.iface.Resource;
 import pl.edu.agh.iosr.lambda.dropwizard.kafka.KafkaApplication;
 import pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentValidator;
 
@@ -14,7 +15,7 @@ import javax.ws.rs.Path;
 import java.util.logging.Logger;
 
 @Path(value = "/")
-public class StockResource {
+public class StockResource implements Resource<StockFieldsDescriptor> {
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -25,14 +26,13 @@ public class StockResource {
         this.conf = conf;
     }
 
-    //private TridentValuesGenerator valuesGenerator = new TridentValuesGenerator(stockFieldsDescriptor.stockFields);
     private TridentValidator tridentValidator = new TridentValidator(stockFieldsDescriptor);
 
-    private KafkaApplication kafkaApplication = new KafkaApplication();
+    private KafkaApplication kafkaApplication = new KafkaApplication("tuple");
 
-    private String ACCEPTED = "OK";
+    private static final String ACCEPTED = "OK";
 
-    private String FAILED = "FAIL";
+    private static final String FAILED = "FAIL";
 
     @GET
     public String rootStock(){
@@ -47,24 +47,12 @@ public class StockResource {
 
     @POST
     @Path(value = "stock")
+    @Override
     public String inputMethod(String body) {
 
         logger.info("BODY: "+body);
 
         JSONObject jsonBody = new JSONObject(body);
-
-        /*Values tridentValues = valuesGenerator.valuesInstance(jsonBody);
-
-        if(tridentValues==null){
-            logger.warning(FAILED);
-            return FAILED;
-        }*/
-
-        /*TridentTuple tridentTuple = tridentValidator.tupleInstance(jsonBody);
-        if(tridentTuple==null){
-            logger.warning(FAILED);
-            return FAILED;
-        }*/
 
         if(tridentValidator.invalidJson(jsonBody)){
             logger.warning("DATA INVALID");

@@ -7,6 +7,9 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -15,28 +18,24 @@ import java.util.logging.Logger;
  */
 public class KafkaApplication {
 
-
-    private static final String topicName = "tuple";
-
     Logger logger = Logger.getLogger(this.getClass().getName());
 
-    String broker = "localhost:9092";
-
     Producer<String,String> producer;
-
-    public KafkaApplication(){
-        Properties props = new Properties();
-
-        props.put("metadata.broker.list",broker);
-        props.put("serializer.class", "kafka.serializer.StringEncoder");
-        props.put("request.required.acks", "1");
+    private String topicName;
 
 
-
-        ProducerConfig config = new ProducerConfig(props);
-
-        producer = new Producer<>(config);
-
+    public KafkaApplication (String topicName){
+        this.topicName = topicName;
+        Properties properties = new Properties();
+        try {
+            InputStream inputStream = new FileInputStream("configuration.prop");
+            properties.load(inputStream);
+            ProducerConfig config = new ProducerConfig(properties);
+            producer = new Producer<>(config);
+            logger.info("Broker address: "+(String)properties.get("metadata.broker.list"));
+        }catch (IOException e){
+            logger.warning(e.toString());
+        }
     }
 
     public boolean sendData(String validatedJsonBody){
