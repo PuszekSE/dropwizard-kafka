@@ -1,6 +1,12 @@
 # dropwizard-kafka
 Dropwizard and Kafka integration module
 
+Prerequisites for Dropwizard server:
+- Maven 3.x
+- Java 1.7
+
+Also stockmarket demo requires Python 2.7.x
+
 Parts of the system:
 - stock market data stream
 - data descriptors
