@@ -13,6 +13,14 @@ Parts of the system:
 - datą validator and serializer
 - standalone Dropwizard instance with stock market reader and Kafka producer
 
+List of dropwizard classes and interfaces that have to be implemented per input stream T:
+
+- TFieldsDescriptor - definition of input stream JSON fields
+- TServiceConfiguration extends com.yammer.dropwizard.config.Configuration
+- TConfiguration, as a container for TServiceConfiguration
+- TService com.yammer.dropwizard.config.Configuration, as a service publisher
+- TResource - actual webservice's implementation, should validate JSON using TridentValidator and then send it via KafkaApplication.
+
 Main data descriptor interface:
 
 public interface FieldsDescriptor {
