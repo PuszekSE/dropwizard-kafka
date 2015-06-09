@@ -4,22 +4,20 @@ Dropwizard and Kafka integration module
 Prerequisites for Dropwizard server:
 - Maven 3.x
 - Java 1.7
-
 Also stockmarket demo requires Python 2.7.x
 
-Parts of the system:
-- stock market data stream
-- data descriptors
-- datą validator and serializer
-- standalone Dropwizard instance with stock market reader and Kafka producer
-
 List of dropwizard classes and interfaces that have to be implemented per input stream T:
-
 - TFieldsDescriptor - definition of input stream JSON fields
 - TServiceConfiguration extends com.yammer.dropwizard.config.Configuration
 - TConfiguration, as a container for TServiceConfiguration
 - TService com.yammer.dropwizard.config.Configuration, as a service publisher
 - TResource - actual webservice's implementation, should validate JSON using TridentValidator and then send it via KafkaApplication.
+
+Parts of the demo system, with all above implemented:
+- stock market data stream
+- data descriptors
+- data validator and serializer
+- standalone Dropwizard instance with stock market reader and Kafka producer
 
 Main data descriptor interface:
 
