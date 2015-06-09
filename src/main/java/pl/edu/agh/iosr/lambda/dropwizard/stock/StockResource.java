@@ -2,10 +2,10 @@ package pl.edu.agh.iosr.lambda.dropwizard.stock;
 
 
 import org.json.JSONObject;
+import pl.edu.agh.iosr.lambda.dropwizard.Resource;
 import pl.edu.agh.iosr.lambda.dropwizard.config.StockConfiguration;
 import pl.edu.agh.iosr.lambda.dropwizard.config.StockFieldsDescriptor;
 import pl.edu.agh.iosr.lambda.dropwizard.config.iface.FieldsDescriptor;
-import pl.edu.agh.iosr.lambda.dropwizard.config.iface.Resource;
 import pl.edu.agh.iosr.lambda.dropwizard.kafka.KafkaApplication;
 import pl.edu.agh.iosr.lambda.dropwizard.kafka.TridentValidator;
 
@@ -15,20 +15,18 @@ import javax.ws.rs.Path;
 import java.util.logging.Logger;
 
 @Path(value = "/")
-public class StockResource implements Resource<StockFieldsDescriptor> {
+public class StockResource extends Resource<StockFieldsDescriptor> {
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final StockConfiguration conf;
-    private FieldsDescriptor stockFieldsDescriptor = new StockFieldsDescriptor();
 
     public StockResource(StockConfiguration conf) {
+        fieldsDescriptor = new StockFieldsDescriptor();
+        tridentValidator = new TridentValidator(fieldsDescriptor);
+        kafkaApplication = new KafkaApplication("tuple");
         this.conf = conf;
     }
-
-    private TridentValidator tridentValidator = new TridentValidator(stockFieldsDescriptor);
-
-    private KafkaApplication kafkaApplication = new KafkaApplication("tuple");
 
     private static final String ACCEPTED = "OK";
 
