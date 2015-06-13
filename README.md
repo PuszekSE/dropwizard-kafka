@@ -19,6 +19,11 @@ Parts of the demo system, with all above implemented:
 - data validator and serializer
 - standalone Dropwizard instance with stock market reader and Kafka producer
 
+Running demo requires:
+- active Kafka/Zookeeper instance with 'tuple' topic defined,
+- mvn install @stock-iface, then mvn install @dropwizard-kafka, finally mvn exec:java
+- python stock-client.py <list of companies' symbols according to Reuter's stock>
+
 Main data descriptor interface:
 
 public interface FieldsDescriptor {
