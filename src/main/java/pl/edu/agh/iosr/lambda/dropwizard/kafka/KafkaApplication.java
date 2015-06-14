@@ -28,7 +28,7 @@ public class KafkaApplication {
         this.topicName = topicName;
         Properties properties = new Properties();
         try {
-            InputStream inputStream = new FileInputStream("configuration.prop");
+            InputStream inputStream = new FileInputStream("conf/configuration.prop");
             properties.load(inputStream);
             ProducerConfig config = new ProducerConfig(properties);
             producer = new Producer<>(config);

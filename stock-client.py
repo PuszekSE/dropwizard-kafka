@@ -1,4 +1,4 @@
-import http.client
+import httplib
 import json
 import time
 import sys
@@ -10,10 +10,10 @@ if(len(sys.argv)<2):
 
 URL = 'localhost'
 PORT = 8080
-dropwizard_connection = http.client.HTTPConnection(URL,PORT)
+dropwizard_connection = httplib.HTTPConnection(URL,PORT)
 
 STOCK_URL = 'dev.markitondemand.com'
-stock_connection = http.client.HTTPConnection(STOCK_URL)
+stock_connection = httplib.HTTPConnection(STOCK_URL)
 print (stock_connection)
 
 STOCK_CONTEXT = '/Api/v2/Quote/json?symbol='

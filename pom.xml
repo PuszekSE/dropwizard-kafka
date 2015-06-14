@@ -88,7 +88,7 @@
                             <mainClass>pl.edu.agh.iosr.lambda.dropwizard.StockService</mainClass>
                             <arguments>
                                 <argument>server</argument>
-                                <argument>stock-configuration.yml</argument>
+                                <argument>conf/stock-configuration.yml</argument>
                             </arguments>
                         </configuration>
                     </plugin>
